@@ -1,0 +1,392 @@
+
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------- without react hook form 
+
+import React, { useState } from "react";
+
+function Form1() {
+  const [data, setData] = useState({});
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  console.log(data, "data");
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log(data, "data sent");
+  };
+
+  return (
+    <div>
+      <form onSubmit={handleSubmit}>
+        name: <input type="text" name="name" onChange={handleChange}></input>
+        password:{" "}
+        <input type="password" name="password" onChange={handleChange}></input>
+        age: <input type="number" name="age" onChange={handleChange}></input>
+        <button type="submit">click</button>
+      </form>
+    </div>
+  );
+}
+
+export default Form1;
+
+// ----------------------------------------------------------------------------------------------------------------------------------------------------------  register and handleSubmit
+
+// npm for react hook form  =>   npm install react-hook-form @hookform/devtools   <======================================================
+
+
+import React from "react";
+import { useForm } from "react-hook-form";
+
+function Form1() {
+  const { register, handleSubmit } = useForm();
+
+  console.log(data, "data");
+
+  const submitForm = (data) => {
+    console.log(data, "data sent");
+  };
+
+  return (
+    <div>
+      <form onSubmit={handleSubmit(submitForm)}>
+        name: <input type="text" {...register("name")}></input>
+        password: <input type="password" {...register("password")}></input>
+        age: <input type="number" {...register("age")}></input>
+        <button>click</button>
+      </form>
+    </div>
+  );
+}
+
+export default Form1;
+
+// ------------------------------------------------------------------------------------------------------------------------------------------------  register and handleSubmit and reset
+
+import React, { useEffect } from "react";
+import { useForm } from "react-hook-form";
+
+function Form1() {
+  const { register, handleSubmit, reset, formState } = useForm();
+  const { isSubmitSuccessful } = formState;
+
+  const submitForm = (data) => {
+    console.log(data, "data sent");
+  };
+
+  console.log(isSubmitSuccessful, "isSubmitSuccessful");
+
+  useEffect(() => {
+    if (isSubmitSuccessful) {
+      reset();
+    }
+  }, [isSubmitSuccessful]);
+
+  return (
+    <div>
+      <form onSubmit={handleSubmit(submitForm)}>
+        name: <input type="text" {...register("name")}></input>
+        password: <input type="password" {...register("password")}></input>
+        age: <input type="number" {...register("age")}></input>
+        <button>click</button>
+      </form>
+    </div>
+  );
+}
+
+export default Form1;
+
+// -----------------------------------------------------------------------------------------------------------------------------------  register and handleSubmit and reset and getValues
+
+import React, { useEffect } from "react";
+import { useForm } from "react-hook-form";
+
+function Form1() {
+  const { register, handleSubmit, reset, formState, getValues } = useForm();
+  const { isSubmitSuccessful } = formState;
+
+  const submitForm = (data) => {
+    console.log(data, "data sent");
+  };
+
+  // get the data which we sent
+  console.log(getValues(), "getValues.....");
+
+  console.log(isSubmitSuccessful, "isSubmitSuccessful");
+
+  useEffect(() => {
+    if (isSubmitSuccessful) {
+      reset();
+    }
+  }, [isSubmitSuccessful]);
+
+  return (
+    <div>
+      <form onSubmit={handleSubmit(submitForm)}>
+        name: <input type="text" {...register("name")}></input>
+        password: <input type="password" {...register("password")}></input>
+        age: <input type="number" {...register("age")}></input>
+        <button>click</button>
+      </form>
+    </div>
+  );
+}
+
+export default Form1;
+
+// -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+//  register and handleSubmit and reset and getValues and make filed required and give error
+//  and  if we do not fill and directly click on submit
+
+import React, { useEffect } from "react";
+import { useForm } from "react-hook-form";
+
+function Form1() {
+  const { register, handleSubmit, reset, formState, getValues } = useForm();
+  const { isSubmitSuccessful, errors } = formState;
+
+  const submitForm = (data) => {
+    console.log(data, "data sent");
+  };
+
+  // get the data which we sent
+  console.log(getValues(), "getValues.....");
+
+  console.log(isSubmitSuccessful, "isSubmitSuccessful");
+
+  console.log(errors, "errors");
+
+  useEffect(() => {
+    if (isSubmitSuccessful) {
+      reset();
+    }
+  }, [isSubmitSuccessful, reset]);
+
+  return (
+    <div>
+      <form onSubmit={handleSubmit(submitForm)}>
+        <div className="name">
+          name:
+          <input type="text" {...register("name", { required: true })}></input>
+          {errors?.name ? <p>name is required</p> : ""}
+        </div>
+        <div className="password">
+          password:
+          <input
+            type="password"
+            {...register("password", { required: true })}
+          ></input>
+          {errors?.password ? <p>password is required</p> : ""}
+        </div>
+
+        <div className="age">
+          age:
+          <input type="number" {...register("age", { required: true })}></input>
+          {errors?.age ? <p>age is required</p> : ""}
+        </div>
+
+        <button>click</button>
+      </form>
+    </div>
+  );
+}
+
+export default Form1;
+
+// ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+// how to handle multiple errors with conditions
+
+import React, { useEffect } from "react";
+import { useForm } from "react-hook-form";
+
+function Form1() {
+  const { register, handleSubmit, reset, formState, getValues } = useForm();
+  const { isSubmitSuccessful, errors } = formState;
+
+  const submitForm = (data) => {
+    console.log(data, "data sent");
+  };
+
+  // get the data which we sent
+  console.log(getValues(), "getValues.....");
+
+  console.log(isSubmitSuccessful, "isSubmitSuccessful");
+
+  console.log(errors, "errors");
+
+  useEffect(() => {
+    if (isSubmitSuccessful) {
+      reset();
+    }
+  }, [isSubmitSuccessful, reset]);
+
+  return (
+    <div>
+      <form onSubmit={handleSubmit(submitForm)}>
+        <div className="name">
+          name:
+          <input
+            type="text"
+            {...register("name", { required: true, minLength: 4 })}
+          />
+          {errors?.name && errors.name.type === "required" && (
+            <p>Name is required</p>
+          )}
+          {errors?.name && errors.name.type === "minLength" && (
+            <p>Name should be at least 4 characters</p>
+          )}
+        </div>
+
+        {/* <div className="password">
+          password:
+          <input
+            type="password"
+            {...register("password", { required: true })}
+          ></input>
+          {errors?.password ? <p>password is required</p> : ""}
+        </div> */}
+
+        <div className="password">
+          password:
+          <input
+            type="password"
+            {...register("password", {
+              required: true,
+              pattern: {
+                value: /^(?=.*[a-z])(?=.*\d)[a-z\d]+$/,
+                message:
+                  "Password must contain only lowercase letters and numbers",
+              },
+            })}
+          />
+          {errors?.password && errors.password.type === "required" && (
+            <p>Password is required</p>
+          )}
+          {errors?.password && errors.password.type === "pattern" && (
+            <p>{errors.password.message}</p>
+          )}
+        </div>
+
+        <div className="age">
+          age:
+          <input type="number" {...register("age", { required: true })}></input>
+          {errors?.age ? <p>age is required</p> : ""}
+        </div>
+
+        <button>click</button>
+      </form>
+    </div>
+  );
+}
+
+export default Form1;
+
+// -------------------------------------------------------------------------------------------------------------------------------------------------------------------  add dev tools
+
+import { DevTool } from "@hookform/devtools";
+import React, { useEffect } from "react";
+import { useForm } from "react-hook-form";
+
+function Form1() {
+  const { register, handleSubmit, reset, formState, getValues, control } =
+    useForm();
+  const { isSubmitSuccessful } = formState;
+
+  const submitForm = (data) => {
+    console.log(data, "data sent");
+  };
+
+  // get the data which we sent
+  console.log(getValues(), "getValues.....");
+
+  console.log(isSubmitSuccessful, "isSubmitSuccessful");
+
+  useEffect(() => {
+    if (isSubmitSuccessful) {
+      reset();
+    }
+  }, [isSubmitSuccessful]);
+
+  return (
+    <div>
+      <form onSubmit={handleSubmit(submitForm)}>
+        name: <input type="text" {...register("name")}></input>
+        password: <input type="password" {...register("password")}></input>
+        age: <input type="number" {...register("age")}></input>
+        <button>click</button>
+      </form>
+      <DevTool control={control} />
+    </div>
+  );
+}
+
+export default Form1;
+
+// -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+// import { DevTool } from "@hookform/devtools";
+// import React, { useEffect } from "react";
+// import { useForm } from "react-hook-form";
+
+// function Form1() {
+//   const { register, handleSubmit, reset, formState, getValues, control } =
+//     useForm();
+//   const {
+//     isSubmitSuccessful,
+//     touchValues,
+//     touchedFields,
+//     dirtyFields,
+//     errors,
+//   } = formState;
+
+//   const submitForm = (data) => {
+//     console.log(data, "data sent");
+//   };
+
+//   // get the data which we sent
+//   console.log(getValues(), "getValues.....");
+
+//   // see touched fileds
+//   console.log(touchedFields, "touchedFields");
+
+//   // see dirty fileds
+//   console.log(dirtyFields, "dirtyFields");
+
+//   console.log(isSubmitSuccessful, "isSubmitSuccessful");
+
+//   console.log(errors, "errors");
+
+//   useEffect(() => {
+//     if (isSubmitSuccessful) {
+//       reset();
+//     }
+//   }, [isSubmitSuccessful, reset]);
+
+//   return (
+//     <div>
+//       <form onSubmit={handleSubmit(submitForm)}>
+//         name:
+//         <input type="text" {...register("name", { required: true })}></input>
+//         <div className="password">
+//           password:
+//           <input
+//             type="password"
+//             {...register("password", { required: true })}
+//           ></input>
+//           {errors?.password ? <p>password is required</p> : ""}
+//         </div>
+//         age:
+//         <input type="number" {...register("age", { required: true })}></input>
+//         <button>click</button>
+//       </form>
+//       <DevTool control={control} />
+//     </div>
+//   );
+// }
+
+// export default Form1;
